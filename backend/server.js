@@ -3,11 +3,11 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const morgan = require('morgan');
 const path = require('path');
+const fs = require('fs');
 require('dotenv').config();
 
 const app = express();
 
-// CORS - Allow ALL origins
 app.use(cors());
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -19,7 +19,15 @@ app.use((req, res, next) => {
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(morgan('dev'));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Uploads folder create
+const uploadsPath = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsPath)) {
+    fs.mkdirSync(uploadsPath, { recursive: true });
+}
+
+// Serve uploads
+app.use('/uploads', express.static(uploadsPath));
 
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/services', require('./routes/services'));
@@ -33,7 +41,7 @@ const PORT = process.env.PORT || 5000;
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('MongoDB Connected');
-    require('fs').mkdirSync('./uploads', { recursive: true });
+    console.log('Uploads path:', uploadsPath);
     app.listen(PORT, '0.0.0.0', () => console.log(`Server: ${PORT}`));
   })
   .catch(err => { console.error(err); process.exit(1); });
