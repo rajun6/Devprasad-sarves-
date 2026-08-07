@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - Service Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root{--primary:#2563eb;--dark:#0f172a;--white:#fff;--text:#1e293b;--text-light:#64748b;--border:#e2e8f0;--radius:16px}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Poppins',sans-serif;background:#f8fafc;color:var(--text)}
+        .header{background:var(--white);padding:12px 20px;box-shadow:0 2px 10px rgba(0,0,0,.05);display:flex;justify-content:space-between;align-items:center}
+        .header a{color:var(--primary);text-decoration:none;font-weight:600}
+        .btn{padding:8px 16px;border-radius:50px;font-weight:600;font-size:12px;cursor:pointer;border:none;text-decoration:none;font-family:inherit;transition:.3s}
+        .btn-primary{background:var(--primary);color:#fff}.btn-outline{background:transparent;color:var(--primary);border:2px solid var(--primary)}
+        .container{max-width:900px;margin:30px auto;padding:0 20px}
+        
+        .profile-card{background:var(--white);border-radius:var(--radius);padding:30px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.05);margin-bottom:25px;position:relative}
+        .avatar{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:700;margin:0 auto 15px;cursor:pointer;position:relative}
+        .avatar:hover::after{content:'📷';position:absolute;bottom:0;right:0;font-size:20px}
+        .profile-card h2{margin-bottom:4px}.profile-card p{color:var(--text-light);font-size:13px}
+        .edit-btn{position:absolute;top:15px;right:15px;background:var(--primary);color:#fff;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;font-size:16px}
+        
+        .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:25px}
+        .stat{background:var(--white);padding:18px;border-radius:12px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+        .stat h3{font-size:24px;color:var(--primary)}.stat p{font-size:11px;color:var(--text-light)}
+        
+        .orders{background:var(--white);border-radius:var(--radius);padding:20px;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+        .orders h3{margin-bottom:15px}
+        .order-card{background:#f8fafc;padding:15px 20px;border-radius:12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+        .badge{display:inline-block;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:600;text-transform:uppercase}
+        .badge-pending{background:#fef3c7;color:#92400e}.badge-processing{background:#dbeafe;color:#1e40af}.badge-completed{background:#d1fae5;color:#065f46}
+        
+        /* EDIT FORM */
+        .edit-form{display:none;background:var(--white);border-radius:var(--radius);padding:25px;box-shadow:0 4px 20px rgba(0,0,0,.1);margin-bottom:25px}
+        .edit-form.active{display:block}
+        .form-group{margin-bottom:15px}
+        .form-group label{display:block;font-size:12px;font-weight:600;margin-bottom:5px;color:var(--text)}
+        .form-group input{width:100%;padding:10px 14px;border:2px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;outline:none}
+        .form-group input:focus{border-color:var(--primary)}
+        
+        @media(max-width:768px){.stats{grid-template-columns:repeat(2,1fr)}}
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <a href="index.html">← Back to Home</a>
+    <div>
+        <a href="booking.html" class="btn btn-primary">+ New Booking</a>
+        <button class="btn btn-outline" onclick="logout()">Logout</button>
+    </div>
+</header>
+
+<div class="container">
+    <!-- PROFILE CARD -->
+    <div class="profile-card" id="profileCard">
+        <button class="edit-btn" onclick="toggleEditForm()" title="Edit Profile">✏️</button>
+        <div class="avatar" id="userAvatar">U</div>
+        <h2 id="userName">Loading...</h2>
+        <p id="userEmail"></p>
+        <p style="margin-top:5px" id="userMobile"></p>
+    </div>
+
+    <!-- EDIT PROFILE FORM -->
+    <div class="edit-form" id="editForm">
+        <h3 style="margin-bottom:20px">✏️ Edit Profile</h3>
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="editName" placeholder="Enter your name">
+        </div>
+        <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="editEmail" placeholder="Enter email">
+        </div>
+        <div class="form-group">
+            <label>Mobile Number</label>
+            <input type="text" id="editMobile" placeholder="10-digit mobile number" maxlength="10">
+        </div>
+        <div class="form-group">
+            <label>New Password (leave blank to keep current)</label>
+            <input type="password" id="editPassword" placeholder="Enter new password" minlength="6">
+        </div>
+        <div style="display:flex;gap:10px">
+            <button class="btn btn-primary" onclick="saveProfile()" style="flex:1">💾 Save Changes</button>
+            <button class="btn btn-outline" onclick="toggleEditForm()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats">
+        <div class="stat"><h3 id="totalOrders">0</h3><p>Total Orders</p></div>
+        <div class="stat"><h3 id="pendingCount">0</h3><p>Pending</p></div>
+        <div class="stat"><h3 id="processingCount">0</h3><p>Processing</p></div>
+        <div class="stat"><h3 id="completedCount">0</h3><p>Completed</p></div>
+    </div>
+
+    <!-- ORDERS -->
+    <div class="orders">
+        <h3>📋 My Orders</h3>
+        <div id="ordersList"><p style="text-align:center;padding:20px">Loading...</p></div>
+    </div>
+</div>
+
+<script>
+var API='http://localhost:5000/api';
+var token=localStorage.getItem('sc_token');
+if(!token)location.href='index.html';
+
+function logout(){localStorage.clear();location.href='index.html'}
+function toggleEditForm(){
+    document.getElementById('editForm').classList.toggle('active');
+    document.getElementById('profileCard').style.display=document.getElementById('editForm').classList.contains('active')?'none':'block';
+}
+
+var userData=null;
+
+// Load Profile
+fetch(API+'/auth/me',{headers:{'Authorization':'Bearer '+token}})
+.then(r=>r.json()).then(d=>{
+    if(d.success){
+        userData=d.data;
+        updateProfileUI(userData);
+        fillEditForm(userData);
+    }
+});
+
+function updateProfileUI(u){
+    document.getElementById('userName').textContent=u.name;
+    document.getElementById('userEmail').textContent='📧 '+u.email;
+    document.getElementById('userMobile').textContent='📱 '+(u.mobile||'N/A');
+    document.getElementById('userAvatar').textContent=u.name.charAt(0).toUpperCase();
+}
+
+function fillEditForm(u){
+    document.getElementById('editName').value=u.name||'';
+    document.getElementById('editEmail').value=u.email||'';
+    document.getElementById('editMobile').value=u.mobile||'';
+    document.getElementById('editPassword').value='';
+}
+
+// Save Profile
+function saveProfile(){
+    var data={
+        name:document.getElementById('editName').value,
+        email:document.getElementById('editEmail').value,
+        mobile:document.getElementById('editMobile').value
+    };
+    var newPass=document.getElementById('editPassword').value;
+    
+    // Update profile
+    fetch(API+'/auth/updateprofile',{
+        method:'PUT',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+        body:JSON.stringify(data)
+    })
+    .then(r=>r.json())
+    .then(d=>{
+        if(d.success){
+            userData=d.data;
+            updateProfileUI(d.data);
+            alert('✅ Profile updated successfully!');
+            toggleEditForm();
+            
+            // Change password if provided
+            if(newPass){
+                fetch(API+'/auth/changepassword',{
+                    method:'PUT',
+                    headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+                    body:JSON.stringify({currentPassword:'',newPassword:newPass})
+                }).then(r=>r.json()).then(d2=>{
+                    if(d2.success)alert('🔐 Password changed!');
+                });
+            }
+        }else{
+            alert('❌ Update failed!');
+        }
+    });
+}
+
+// Load Orders
+fetch(API+'/orders/myorders',{headers:{'Authorization':'Bearer '+token}})
+.then(r=>r.json()).then(d=>{
+    if(d.success&&d.data.length>0){
+        var orders=d.data;
+        document.getElementById('totalOrders').textContent=orders.length;
+        document.getElementById('pendingCount').textContent=orders.filter(o=>o.status==='pending').length;
+        document.getElementById('processingCount').textContent=orders.filter(o=>o.status==='processing').length;
+        document.getElementById('completedCount').textContent=orders.filter(o=>o.status==='completed').length;
+        
+        document.getElementById('ordersList').innerHTML=orders.map(o=>
+            '<div class="order-card">'+
+                '<div><strong>#'+(o.orderNumber||o._id.slice(-6))+'</strong><br><small>'+new Date(o.createdAt).toLocaleDateString()+'</small></div>'+
+                '<div>'+(o.service?o.service.name:o.customService||'Service')+'</div>'+
+                '<div><span class="badge badge-'+o.status+'">'+o.status+'</span></div>'+
+                '<div style="font-weight:700;color:var(--primary)">₹'+(o.service?o.service.price:'N/A')+'</div>'+
+            '</div>'
+        ).join('');
+    }else{
+        document.getElementById('ordersList').innerHTML='<p style="text-align:center;padding:30px">📋 No orders yet. <a href="booking.html" style="color:var(--primary)">Book now</a></p>';
+    }
+});
+</script>
+</body>
+</html>

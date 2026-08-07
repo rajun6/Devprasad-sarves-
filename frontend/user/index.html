@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root{--primary:#2563eb;--dark:#0f172a;--white:#fff;--text:#1e293b;--text-light:#64748b;--border:#e2e8f0}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Poppins',sans-serif;background:#f8fafc;color:var(--text)}
+
+        /* NAVBAR */
+        .navbar{background:var(--white);padding:0;box-shadow:0 2px 20px rgba(0,0,0,.06);position:sticky;top:0;z-index:100}
+        .nav-inner{max-width:1300px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+        .nav-left{display:flex;align-items:center;gap:10px}
+        .menu-btn{font-size:24px;cursor:pointer;background:none;border:none;color:var(--text);padding:5px}
+        .nav-logo{font-size:18px;font-weight:700;color:var(--primary);text-decoration:none;white-space:nowrap}
+        .nav-center{flex:1;max-width:450px;min-width:180px}
+        .search-box{display:flex;background:#f1f5f9;border-radius:50px;overflow:hidden;border:2px solid transparent;transition:.3s}
+        .search-box:focus-within{background:#fff;border-color:var(--primary);box-shadow:0 0 0 4px rgba(37,99,235,.1)}
+        .search-box input{flex:1;padding:10px 16px;border:none;outline:none;background:transparent;font-size:13px;font-family:inherit;min-width:0}
+        .search-box button{padding:10px 16px;background:var(--primary);color:#fff;border:none;cursor:pointer;font-size:14px;font-weight:600}
+        .nav-right{display:flex;align-items:center;gap:10px}
+        .btn{padding:8px 16px;border-radius:50px;font-weight:600;font-size:11px;cursor:pointer;border:none;text-decoration:none;font-family:inherit;transition:.3s;white-space:nowrap}
+        .btn-primary{background:var(--primary);color:#fff}
+        .btn-outline{background:transparent;color:var(--primary);border:2px solid var(--primary)}
+        .profile-pic{width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid var(--primary);cursor:pointer}
+
+        /* SIDE MENU */
+        .sidenav{position:fixed;top:0;left:0;bottom:0;width:280px;background:#fff;z-index:200;transform:translateX(-100%);transition:.3s;box-shadow:5px 0 30px rgba(0,0,0,.1);overflow-y:auto}
+        .sidenav.open{transform:translateX(0)}
+        .sidenav-head{padding:20px;background:var(--primary);color:#fff;display:flex;justify-content:space-between;align-items:center;font-weight:600}
+        .sidenav-head button{background:none;border:none;color:#fff;font-size:20px;cursor:pointer}
+        .sidenav-links{padding:15px}
+        .sidenav-links a{display:flex;align-items:center;gap:12px;padding:13px 15px;text-decoration:none;color:#334155;border-radius:10px;font-size:14px;transition:.2s}
+        .sidenav-links a:hover{background:#f1f5f9;color:var(--primary)}
+        .sidenav-links a i{width:20px;text-align:center;font-size:16px}
+        .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:199}
+        .overlay.show{display:block}
+
+        /* HERO */
+        .hero{position:relative;height:320px;overflow:hidden}
+        .hero-placeholder{position:absolute;inset:0;background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%)}
+        .hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
+        .hero-overlay{position:absolute;inset:0;background:linear-gradient(transparent 30%,rgba(0,0,0,.75))}
+        .hero-text{position:absolute;bottom:30px;left:20px;right:20px;color:#fff;z-index:1}
+        .hero-text h1{font-size:clamp(22px,4vw,32px);font-weight:800;margin-bottom:4px}
+        .hero-text p{font-size:14px;opacity:.9}
+
+        /* SECTIONS */
+        .section{padding:40px 20px;max-width:1200px;margin:0 auto}
+        .section h2{text-align:center;font-size:26px;margin-bottom:5px}
+        .section>p{text-align:center;color:var(--text-light);font-size:13px;margin-bottom:30px}
+        .services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+        .service-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.05);cursor:pointer;transition:.3s}
+        .service-card:hover{transform:translateY(-5px);box-shadow:0 15px 40px rgba(0,0,0,.1)}
+        .service-card img{width:100%;height:180px;object-fit:cover}
+        .no-img{height:180px;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;color:#fff;font-size:40px}
+        .card-body{padding:18px}
+        .card-body h3{font-size:16px;margin-bottom:4px}
+        .card-body .price{font-size:20px;font-weight:700;color:var(--primary);margin-top:8px}
+        .badge-hot{display:inline-block;background:#fef3c7;color:#92400e;padding:3px 8px;border-radius:20px;font-size:9px;font-weight:600;margin-bottom:4px}
+
+        /* CONTACT */
+        .contact-sec{background:var(--dark);color:#fff;padding:40px 20px;text-align:center}
+        .contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px;max-width:900px;margin:20px auto 0}
+        .contact-card{background:rgba(255,255,255,.05);border-radius:14px;padding:22px;cursor:pointer;transition:.3s;text-decoration:none;color:#fff;display:block;border:1px solid rgba(255,255,255,.06)}
+        .contact-card:hover{background:rgba(255,255,255,.12);transform:translateY(-3px)}
+        .contact-card i{font-size:24px;color:#60a5fa;margin-bottom:8px}
+        .contact-card h4{font-size:13px;margin-bottom:3px}
+        .contact-card p{color:#94a3b8;font-size:12px}
+
+        /* SMS FORM */
+        .sms-form{max-width:500px;margin:20px auto 0;display:flex;gap:8px}
+        .sms-form input{flex:1;padding:10px 15px;border-radius:50px;border:none;outline:none;font-family:inherit;font-size:13px}
+        .sms-form button{padding:10px 20px;background:#25D366;color:#fff;border:none;border-radius:50px;font-weight:600;cursor:pointer;font-family:inherit;font-size:13px;white-space:nowrap}
+        .sms-form button:hover{background:#128C7E}
+
+        footer{background:var(--dark);color:#64748b;text-align:center;padding:18px;font-size:11px;border-top:1px solid #1e293b}
+        footer a{color:#94a3b8;text-decoration:none;margin:0 8px}
+
+        .wa-float{position:fixed;bottom:20px;right:20px;z-index:150}
+        .wa-float a{display:flex;align-items:center;justify-content:center;width:55px;height:55px;background:#25D366;color:#fff;border-radius:50%;font-size:24px;text-decoration:none;box-shadow:0 8px 25px rgba(37,211,102,.4)}
+
+        @media(max-width:768px){
+            .nav-center{max-width:200px}.search-box input{font-size:11px;padding:8px 10px}.search-box button{padding:8px 10px;font-size:11px}
+            .hero{height:250px}.services-grid{grid-template-columns:1fr}.sms-form{flex-direction:column}
+        }
+        @media(max-width:480px){.nav-center{display:none}}
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR WITH SEARCH -->
+<nav class="navbar">
+    <div class="nav-inner">
+        <div class="nav-left">
+            <button class="menu-btn" onclick="openMenu()">☰</button>
+            <a href="index.html" class="nav-logo" id="siteTitle">Service Center</a>
+        </div>
+        <div class="nav-center">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search services...">
+                <button onclick="searchServices()">🔍</button>
+            </div>
+        </div>
+        <div class="nav-right">
+            <button class="btn btn-outline" id="loginBtn" onclick="openAuth()">Login</button>
+            <a href="dashboard.html" class="btn btn-primary" id="dashBtn" style="display:none">Account</a>
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='38' height='38'%3E%3Ccircle cx='19' cy='19' r='19' fill='%23e2e8f0'/%3E%3C/svg%3E" class="profile-pic" id="profilePic">
+        </div>
+    </div>
+</nav>
+
+<!-- SIDE MENU -->
+<div class="overlay" id="overlay" onclick="closeMenu()"></div>
+<div class="sidenav" id="sidenav">
+    <div class="sidenav-head">☰ Menu <button onclick="closeMenu()">✕</button></div>
+    <div class="sidenav-links">
+        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="#services"><i class="fas fa-concierge-bell"></i> Services</a>
+        <a href="about.html"><i class="fas fa-info-circle"></i> About</a>
+        <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+        <a href="#" id="menuWa" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+        <a href="#" id="menuEm"><i class="fas fa-envelope"></i> Email</a>
+        <hr style="margin:10px 0;border-color:#e2e8f0">
+        <a href="privacy.html"><i class="fas fa-shield"></i> Privacy</a>
+        <a href="terms.html"><i class="fas fa-file"></i> Terms</a>
+    </div>
+</div>
+
+<!-- HERO BANNER -->
+<div class="hero">
+    <div class="hero-placeholder"></div>
+    <img src="" class="hero-bg" id="heroBg" onerror="this.style.display='none'">
+    <div class="hero-overlay"></div>
+    <div class="hero-text">
+        <h1 id="welcomeMsg">Welcome to Service Center</h1>
+        <p id="welcomeSub">Professional Services at Your Doorstep</p>
+    </div>
+</div>
+
+<!-- SERVICES -->
+<section class="section" id="services">
+    <h2>📋 Our Services</h2>
+    <p>Choose the service you need</p>
+    <div class="services-grid" id="servicesGrid"><div style="text-align:center;padding:40px;grid-column:1/-1">Loading...</div></div>
+</section>
+
+<!-- CONTACT with SMS -->
+<section class="contact-sec">
+    <h2 style="font-size:24px;margin-bottom:8px">📞 Contact Us</h2>
+    <div class="contact-grid">
+        <a class="contact-card" id="waContact" href="#" target="_blank">
+            <i class="fab fa-whatsapp"></i><h4>WhatsApp</h4><p id="cPhone">-</p>
+        </a>
+        <a class="contact-card" id="emContact" href="#">
+            <i class="fas fa-envelope"></i><h4>Email</h4><p id="cEmail">-</p>
+        </a>
+        <div class="contact-card">
+            <i class="fas fa-map-marker-alt"></i><h4>Address</h4><p id="cAddress">-</p>
+        </div>
+        <div class="contact-card">
+            <i class="fas fa-clock"></i><h4>Hours</h4><p id="cHours">-</p>
+        </div>
+    </div>
+    <!-- SMS FORM -->
+    <div class="sms-form">
+        <input type="text" id="smsMessage" placeholder="✉️ Type your message here...">
+        <button onclick="sendSMS()"><i class="fab fa-whatsapp"></i> Send via WhatsApp</button>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2026 <span id="footerName">Service Center</span> | <a href="about.html">About</a> | <a href="contact.html">Contact</a> | <a href="privacy.html">Privacy</a></p>
+</footer>
+
+<div class="wa-float"><a href="#" target="_blank" id="waLink"><i class="fab fa-whatsapp"></i></a></div>
+
+<!-- AUTH MODAL -->
+<div id="authModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
+    <div style="background:#fff;border-radius:18px;padding:28px;width:100%;max-width:380px">
+        <h2 style="text-align:center;margin-bottom:18px" id="authTitle">🔐 Login</h2>
+        <input type="text" id="authName" placeholder="Full Name" style="display:none;width:100%;padding:11px;border:2px solid #e2e8f0;border-radius:8px;margin-bottom:10px;font-family:inherit">
+        <input type="text" id="authMobile" placeholder="Mobile" style="display:none;width:100%;padding:11px;border:2px solid #e2e8f0;border-radius:8px;margin-bottom:10px;font-family:inherit">
+        <input type="email" id="authEmail" placeholder="Email" style="width:100%;padding:11px;border:2px solid #e2e8f0;border-radius:8px;margin-bottom:10px;font-family:inherit">
+        <input type="password" id="authPassword" placeholder="Password" style="width:100%;padding:11px;border:2px solid #e2e8f0;border-radius:8px;margin-bottom:10px;font-family:inherit">
+        <button onclick="handleAuth()" id="authBtn" style="width:100%;padding:12px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-weight:600;cursor:pointer;font-family:inherit">Login</button>
+        <p style="text-align:center;margin-top:12px;font-size:12px;color:#64748b"><span id="authToggle">New user? <a href="#" onclick="toggleAuth()" style="color:#2563eb;font-weight:600">Register</a></span></p>
+        <button onclick="document.getElementById('authModal').style.display='none'" style="display:block;margin:8px auto 0;background:none;border:none;color:#94a3b8;cursor:pointer;font-size:12px">Cancel</button>
+    </div>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+function openMenu(){document.getElementById('sidenav').classList.add('open');document.getElementById('overlay').classList.add('show')}
+function closeMenu(){document.getElementById('sidenav').classList.remove('open');document.getElementById('overlay').classList.remove('show')}
+function openAuth(){document.getElementById('authModal').style.display='flex'}
+function sendSMS(){var msg=document.getElementById('smsMessage').value.trim();var phone=document.getElementById('cPhone').textContent.replace(/[^0-9]/g,'');if(!msg){alert('Please type a message');return}window.open('https://wa.me/'+phone+'?text='+encodeURIComponent(msg),'_blank')}
+</script>
+</body>
+</html>

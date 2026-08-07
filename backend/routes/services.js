@@ -1,0 +1,9 @@
+const express = require('express');
+const router = express.Router();
+const { getServices, getService, getCategories } = require('../controllers/serviceController');
+
+router.get('/', getServices);
+router.get('/categories/list', getCategories);
+router.get('/:id', getService);
+
+module.exports = router;

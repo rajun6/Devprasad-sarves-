@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Service</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .booking-container{max-width:650px;margin:40px auto;padding:30px;background:#fff;border-radius:20px;box-shadow:0 5px 30px rgba(0,0,0,.08)}
+        .booking-container h2{text-align:center;margin-bottom:30px;color:#2563eb}
+        .form-group{margin-bottom:20px}
+        .form-group label{display:block;font-weight:600;margin-bottom:6px;font-size:14px}
+        .form-group input,.form-group select,.form-group textarea{width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:10px;font-family:inherit;font-size:14px;outline:none}
+        .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#2563eb}
+        textarea{resize:vertical;min-height:80px}
+        .upload-area{border:2px dashed #e2e8f0;padding:30px;text-align:center;border-radius:12px;cursor:pointer}
+        .upload-area:hover{border-color:#2563eb}
+        .submit-btn{width:100%;padding:15px;background:#2563eb;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer}
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="nav">
+            <a href="index.html" class="logo">🏢 Service Center</a>
+            <a href="index.html" class="btn btn-outline">← Back</a>
+        </div>
+    </header>
+
+    <div class="booking-container">
+        <h2>📋 Book a Service</h2>
+        <form onsubmit="submitBooking(event)">
+            <div class="form-group"><label>Full Name *</label><input type="text" id="bName" required></div>
+            <div class="form-group"><label>Mobile *</label><input type="text" id="bMobile" required></div>
+            <div class="form-group"><label>Email *</label><input type="email" id="bEmail" required></div>
+            <div class="form-group"><label>Service</label><input type="text" id="bService" placeholder="Service name or custom request"></div>
+            <div class="form-group"><label>Work Description *</label><textarea id="bDesc" required placeholder="Describe what you need..."></textarea></div>
+            <div class="form-group">
+                <label>Upload Documents (optional)</label>
+                <input type="file" id="bDocs" multiple>
+            </div>
+            <button type="submit" class="submit-btn">📤 Submit Booking</button>
+        </form>
+    </div>
+
+    <script>
+        if(!localStorage.getItem('sc_token')){alert('Please login first');location.href='index.html'}
+        
+        function submitBooking(e){
+            e.preventDefault();
+            var fd = new FormData();
+            fd.append('customerDetails[name]', document.getElementById('bName').value);
+            fd.append('customerDetails[mobile]', document.getElementById('bMobile').value);
+            fd.append('customerDetails[email]', document.getElementById('bEmail').value);
+            fd.append('customService', document.getElementById('bService').value);
+            fd.append('workDescription', document.getElementById('bDesc').value);
+            
+            var docs = document.getElementById('bDocs').files;
+            for(var i=0; i<docs.length; i++) fd.append('documents', docs[i]);
+            
+            fetch('http://localhost:5000/api/orders', {
+                method: 'POST',
+                headers: {'Authorization': 'Bearer ' + localStorage.getItem('sc_token')},
+                body: fd
+            })
+            .then(r => r.json())
+            .then(d => {
+                if(d.success){alert('Booking submitted!');location.href='dashboard.html'}
+                else alert('Failed!')
+            });
+        }
+    </script>
+</body>
+</html>

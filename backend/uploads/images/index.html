@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Service Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Poppins',sans-serif;background:#f1f5f9;color:#1e293b}
+        
+        .header{background:#fff;padding:15px 20px;box-shadow:0 1px 3px rgba(0,0,0,0.05);position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center}
+        .logo{font-size:20px;font-weight:700;color:#2563eb;text-decoration:none}
+        .btn{padding:10px 20px;border-radius:8px;font-weight:600;font-size:14px;cursor:pointer;border:none;text-decoration:none;display:inline-block;font-family:inherit}
+        .btn-primary{background:#2563eb;color:#fff}
+        .btn-primary:hover{background:#1d4ed8}
+        
+        .hero{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;padding:50px 20px;text-align:center}
+        .hero img{width:120px;height:120px;border-radius:50%;border:4px solid #fff;margin-bottom:15px}
+        .hero h1{font-size:32px;margin-bottom:8px}
+        .hero p{font-size:16px;opacity:0.9;margin-bottom:20px}
+        .search-box{max-width:500px;margin:0 auto;display:flex;background:#fff;border-radius:8px;overflow:hidden}
+        .search-box input{flex:1;padding:14px;border:none;outline:none;font-size:15px;font-family:inherit}
+        .search-box button{padding:14px 24px;background:#1d4ed8;color:#fff;border:none;font-weight:600;cursor:pointer}
+        
+        .section{padding:40px 20px;max-width:1200px;margin:0 auto}
+        .section h2{font-size:28px;text-align:center;margin-bottom:8px}
+        .section>p{text-align:center;color:#64748b;margin-bottom:30px}
+        
+        .services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+        .service-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,0.05);cursor:pointer;transition:0.3s;border-left:4px solid #2563eb}
+        .service-card:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,0,0,0.1)}
+        .service-card h3{font-size:18px;margin-bottom:6px}
+        .service-card p{color:#64748b;font-size:13px;margin-bottom:12px}
+        .service-card .price{font-size:22px;font-weight:700;color:#2563eb}
+        
+        .contact-section{background:#0f172a;color:#fff;padding:40px 20px;text-align:center}
+        .contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;max-width:900px;margin:20px auto}
+        .contact-card{background:rgba(255,255,255,0.08);padding:20px;border-radius:12px}
+        .contact-card i{font-size:28px;color:#60a5fa;margin-bottom:10px}
+        .contact-card h4{font-size:14px;margin-bottom:4px}
+        .contact-card p{color:#94a3b8;font-size:13px}
+        
+        .whatsapp-float{position:fixed;bottom:20px;right:20px;z-index:999}
+        .whatsapp-float a{display:flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:12px 20px;border-radius:50px;text-decoration:none;font-weight:600;font-size:14px;box-shadow:0 8px 20px rgba(37,211,102,0.4)}
+        
+        .footer{background:#0f172a;color:#64748b;text-align:center;padding:20px;font-size:13px}
+        
+        @media(max-width:768px){
+            .hero h1{font-size:24px}
+            .services-grid{grid-template-columns:1fr}
+            .section h2{font-size:22px}
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="/" class="logo" id="siteName">🏢 Service Center</a>
+        <div>
+            <button class="btn btn-primary" onclick="window.location.href='login.html'" id="loginBtn">Login</button>
+            <a href="dashboard.html" class="btn btn-primary" id="dashBtn" style="display:none">My Account</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <img src="" alt="Owner" id="ownerImg" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%22120%22><rect fill=%22%23fff%22 width=%22120%22 height=%22120%22/><text x=%2260%22 y=%2270%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2240%22>👤</text></svg>'">
+        <h1 id="welcomeMsg">Welcome to Our Service Center</h1>
+        <p id="welcomeSubMsg">Your trusted partner for all government & private services</p>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search services...">
+            <button onclick="searchServices()">🔍 Search</button>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>Our Services</h2>
+        <p>Choose the service you need</p>
+        <div class="services-grid" id="servicesGrid">Loading services...</div>
+    </section>
+
+    <section class="contact-section">
+        <h2 style="color:#fff">Contact Us</h2>
+        <div class="contact-grid">
+            <div class="contact-card"><i class="fab fa-whatsapp"></i><h4>WhatsApp</h4><p id="cPhone">+91 8972550281</p></div>
+            <div class="contact-card"><i class="fas fa-envelope"></i><h4>Email</h4><p id="cEmail">-</p></div>
+            <div class="contact-card"><i class="fas fa-map-marker-alt"></i><h4>Address</h4><p id="cAddress">-</p></div>
+            <div class="contact-card"><i class="fas fa-clock"></i><h4>Hours</h4><p id="cHours">Mon-Sat: 9AM-6PM</p></div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>&copy; 2026 <span id="footerName">Service Center</span>. All rights reserved.</p>
+    </footer>
+
+    <div class="whatsapp-float">
+        <a href="https://wa.me/918972550281" target="_blank" id="waLink">
+            <i class="fab fa-whatsapp"></i> Chat Now
+        </a>
+    </div>
+
+    <script>
+        const API = 'http://localhost:5000/api';
+        const token = localStorage.getItem('sc_token');
+        
+        if(token) {
+            document.getElementById('loginBtn').style.display = 'none';
+            document.getElementById('dashBtn').style.display = 'inline-block';
+        }
+        
+        // Load settings from backend
+        fetch(`${API}/admin/settings`)
+            .then(r => r.json())
+            .then(d => {
+                if(d.success && d.data) {
+                    const s = d.data;
+                    document.getElementById('siteName').textContent = '🏢 ' + (s.siteName || 'Service Center');
+                    document.getElementById('welcomeMsg').textContent = s.welcomeMessage || 'Welcome';
+                    document.getElementById('welcomeSubMsg').textContent = s.welcomeMessageBn || '';
+                    document.getElementById('cPhone').textContent = s.ownerWhatsApp || '+91 8972550281';
+                    document.getElementById('cEmail').textContent = s.ownerEmail || '-';
+                    document.getElementById('cAddress').textContent = s.address || '-';
+                    document.getElementById('cHours').textContent = s.workingHours || 'Mon-Sat: 9AM-6PM';
+                    document.getElementById('footerName').textContent = s.siteName || 'Service Center';
+                    document.title = s.siteName || 'Service Center';
+                    
+                    if(s.ownerPhoto) document.getElementById('ownerImg').src = s.ownerPhoto;
+                    if(s.ownerWhatsApp) {
+                        const num = s.ownerWhatsApp.replace(/[^0-9]/g,'');
+                        document.getElementById('waLink').href = `https://wa.me/${num}`;
+                    }
+                }
+            })
+            .catch(e => console.log('Settings not loaded'));
+        
+        // Load services
+        fetch(`${API}/services?limit=50`)
+            .then(r => r.json())
+            .then(d => {
+                const grid = document.getElementById('servicesGrid');
+                if(d.data && d.data.length > 0) {
+                    grid.innerHTML = d.data.map(s => `
+                        <div class="service-card" onclick="bookService('${s._id}')">
+                            <h3>${s.name}</h3>
+                            <p>${s.description || ''}</p>
+                            <div class="price">₹${s.price}</div>
+                            <small style="color:#94a3b8">⏱ ${s.processingTime || '2-3 days'}</small>
+                        </div>
+                    `).join('');
+                } else {
+                    grid.innerHTML = '<p style="text-align:center;grid-column:1/-1">No services yet. Admin will add soon.</p>';
+                }
+            })
+            .catch(() => {
+                document.getElementById('servicesGrid').innerHTML = '<p style="text-align:center;grid-column:1/-1">Failed to load services</p>';
+            });
+        
+        function searchServices() {
+            const q = document.getElementById('searchInput').value.trim();
+            if(!q) return;
+            fetch(`${API}/services?search=${encodeURIComponent(q)}`)
+                .then(r => r.json())
+                .then(d => {
+                    const grid = document.getElementById('servicesGrid');
+                    grid.innerHTML = d.data.map(s => `
+                        <div class="service-card" onclick="bookService('${s._id}')">
+                            <h3>${s.name}</h3><p>${s.description}</p>
+                            <div class="price">₹${s.price}</div>
+                        </div>
+                    `).join('');
+                });
+        }
+        
+        function bookService(id) {
+            if(!token) { alert('Please login first'); window.location.href='login.html'; return; }
+            window.location.href = `booking.html?service=${id}`;
+        }
+    </script>
+</body>
+</html>
