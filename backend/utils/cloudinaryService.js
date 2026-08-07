@@ -2,9 +2,9 @@ const cloudinary = require('cloudinary').v2;
 const fs = require('fs');
 
 cloudinary.config({
-  cloud_name: 'csludy',
+  cloud_name: 'mediaflows_12e2aca5-d2d2-485a-8adc-4b8c593a344b',
   api_key: '857985573477172',
-  api_secret: 'Sek 857985573477172'
+  api_secret: '857985573477172'
 });
 
 const uploadFile = async (filePath, options = {}) => {
@@ -14,10 +14,10 @@ const uploadFile = async (filePath, options = {}) => {
       resource_type: 'auto'
     });
     if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-    console.log('☁️ Cloudinary:', result.secure_url);
+    console.log('☁️ Cloudinary URL:', result.secure_url);
     return { public_id: result.public_id, url: result.secure_url };
   } catch (error) {
-    console.log('Cloudinary error, using local:', error.message);
+    console.log('Cloudinary error:', error.message);
     const path = require('path');
     const fileName = Date.now() + '-' + path.basename(filePath);
     const uploadDir = path.join(__dirname, '..', 'uploads');
@@ -27,7 +27,9 @@ const uploadFile = async (filePath, options = {}) => {
       fs.copyFileSync(filePath, newPath);
       fs.unlinkSync(filePath);
     }
-    return { public_id: fileName, url: 'http://localhost:5000/uploads/' + fileName };
+    const localUrl = '/uploads/' + fileName;
+    console.log('📁 Local fallback:', localUrl);
+    return { public_id: fileName, url: localUrl };
   }
 };
 
