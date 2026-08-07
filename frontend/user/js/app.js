@@ -1,8 +1,8 @@
-var API='http://localhost:5000/api';
+var API='https://devprasad-api.onrender.com/api';
 var token=localStorage.getItem('sc_token');
 var authMode='login';
 
-function getImgUrl(p){if(!p)return'';if(p.indexOf('http')===0)return p;return'http://localhost:5000/uploads/'+p}
+function getImgUrl(p){if(!p)return'';if(p.indexOf('http')===0)return p;return'https://devprasad-api.onrender.com/uploads/'+p}
 if(token){document.getElementById('loginBtn').style.display='none';document.getElementById('dashBtn').style.display='inline-block'}
 
 // Load settings FAST

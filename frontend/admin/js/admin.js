@@ -1,4 +1,4 @@
-var API='http://localhost:5000/api';
+var API='https://devprasad-api.onrender.com/api';
 var token=localStorage.getItem('sc_token');
 
 // Token check and auto-login
@@ -29,7 +29,7 @@ function getHeaders(){
 function getImgUrl(p){
     if(!p)return'';
     if(p.indexOf('http')===0)return p;
-    return'http://localhost:5000/uploads/'+p;
+    return'https://devprasad-api.onrender.com/uploads/'+p;
 }
 
 // ============ TAB SWITCHING ============

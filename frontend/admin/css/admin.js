@@ -1,4 +1,4 @@
-const API = 'http://localhost:5000/api';
+const API = 'https://devprasad-api.onrender.com/api';
 const token = localStorage.getItem('sc_token');
 
 // Auth check
@@ -91,7 +91,7 @@ function loadServices() {
                     var s = d.data[i];
                     var imgUrl = s.image || '';
                     if(imgUrl && imgUrl.indexOf('http') !== 0) {
-                        imgUrl = 'http://localhost:5000/uploads/' + imgUrl;
+                        imgUrl = 'https://devprasad-api.onrender.com/uploads/' + imgUrl;
                     }
                     if(!imgUrl) {
                         imgUrl = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><rect fill="%23e2e8f0" width="40" height="40"/></svg>';
@@ -151,7 +151,7 @@ function showServiceForm(id) {
                     
                     if(s.image) {
                         var imgUrl = s.image;
-                        if(imgUrl.indexOf('http') !== 0) imgUrl = 'http://localhost:5000/uploads/' + imgUrl;
+                        if(imgUrl.indexOf('http') !== 0) imgUrl = 'https://devprasad-api.onrender.com/uploads/' + imgUrl;
                         document.getElementById('imagePreview').innerHTML = '<img src="' + imgUrl + '" style="max-width:200px;border-radius:8px">';
                     }
                 }

@@ -1,4 +1,4 @@
-const API = 'http://localhost:5000/api';
+const API = 'https://devprasad-api.onrender.com/api';
 const token = localStorage.getItem('sc_token');
 
 if(!token) window.location.href = 'login.html';
