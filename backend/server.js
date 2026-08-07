@@ -43,3 +43,20 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/service_c
     });
   })
   .catch(err => { console.error('DB Error:', err); process.exit(1); });
+
+// Auto-create admin
+const User = require('./models/User');
+setTimeout(async () => {
+    const admin = await User.findOne({email:'admin@example.com'});
+    if(!admin){
+        await User.create({
+            name:'Devprasad Baido',
+            email:'admin@example.com',
+            mobile:'8972550281',
+            password:'ChangeThisToAStrongPassword',
+            role:'admin',
+            isActive:true
+        });
+        console.log('✅ Admin auto-created');
+    }
+}, 3000);
